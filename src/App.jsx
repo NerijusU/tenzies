@@ -13,22 +13,22 @@ function App() {
     // return array
     return newDice;
   };
-  console.log(allNewDice());
+  // console.log(allNewDice());
+
+  const [dice, setDice] = useState(allNewDice());
+
+  const diceElements = dice.map((die) => <Die value={die} />);
+
+  const rollDice = async () => {
+    setDice(allNewDice());
+  };
 
   return (
     <main>
-      <div className="dice-container">
-        <Die value="1" />
-        <Die value="2" />
-        <Die value="3" />
-        <Die value="4" />
-        <Die value="5" />
-        <Die value="6" />
-        <Die value="1" />
-        <Die value="1" />
-        <Die value="1" />
-        <Die value="1" />
-      </div>
+      <div className="dice-container">{diceElements}</div>
+      <button className="roll-dice" onClick={rollDice}>
+        Roll
+      </button>
     </main>
   );
 }
