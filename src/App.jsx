@@ -3,7 +3,17 @@ import Die from "./components/Die";
 import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
 
+import { useTranslation, Trans } from "react-i18next";
+
+const lngs = {
+  en: { nativeName: "English" },
+  de: { nativeName: "Deutsch" },
+  ru: { nativeName: "Русский" },
+};
+
 function App() {
+  const { t, i18n } = useTranslation();
+
   const generateNewDie = () => {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -71,15 +81,27 @@ function App() {
 
   return (
     <main>
+      <div>
+        {Object.keys(lngs).map((lng) => (
+          <button
+            key={lng}
+            style={{
+              fontWeight: i18n.resolvedLanguage === lng ? "bold" : "normal",
+            }}
+            type="submit"
+            onClick={() => i18n.changeLanguage(lng)}
+          >
+            {lngs[lng].nativeName}
+          </button>
+        ))}
+      </div>
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
-      <p className="instructions">
-        Roll until all dice are the same. Click each die to freeze it at its
-        current value between rolls.
-      </p>
+      <p className="instructions">{t("description.part1")}</p>
       <div className="dice-container">{diceElements}</div>
       <button className="roll-dice" onClick={rollDice}>
-        {tenzies ? "New Game" : "Roll"}
+        {tenzies ? t("description.part2") : t("description.part3")}
+        {/* {tenzies ? "New Game" : "Roll"} */}
       </button>
     </main>
   );
